@@ -1,5 +1,6 @@
 package edu.ucsb.cs156.team02.controllers;
 
+import edu.ucsb.cs156.team02.repositories.UserRepository;
 import edu.ucsb.cs156.team02.testconfig.TestConfig;
 import edu.ucsb.cs156.team02.ControllerTestCase;
 import edu.ucsb.cs156.team02.entities.CollegiateSubreddit;
@@ -34,6 +35,9 @@ public class CollegiateSubredditControllerTests extends ControllerTestCase {
 
     @MockBean
     CollegiateSubredditRepository collegiateSubredditRepository;
+
+    @MockBean
+    UserRepository userRepository;
 
     // Test /all endpoint
 
