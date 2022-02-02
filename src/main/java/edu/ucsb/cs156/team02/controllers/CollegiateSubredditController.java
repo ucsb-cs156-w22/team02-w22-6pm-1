@@ -26,7 +26,7 @@ import java.util.Optional;
 @RequestMapping("/api/collegiateSubreddits")
 @RestController
 @Slf4j
-public class TodosController extends ApiController {
+public class CollegiateSubredditController extends ApiController {
 
     @Autowired
     CollegiateSubredditRepository collegiateSubredditRepository;
@@ -36,9 +36,9 @@ public class TodosController extends ApiController {
 
     @ApiOperation(value = "List all collegiate subreddits in the database")
     @GetMapping("/all")
-    public Iterable<Todo> index() {
+    public Iterable<CollegiateSubreddit> index() {
         loggingService.logMethod();
-        Iterable<Todo> subreddits = collegiateSubredditRepository.findAll();
+        Iterable<CollegiateSubreddit> subreddits = collegiateSubredditRepository.findAll();
         return subreddits;
     }
 
