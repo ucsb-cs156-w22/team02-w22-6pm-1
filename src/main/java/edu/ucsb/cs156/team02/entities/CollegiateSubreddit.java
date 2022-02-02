@@ -16,16 +16,11 @@ import lombok.Builder;
 @NoArgsConstructor
 @Builder
 @Entity(name = "collegiate_subreddits")
-public class Todo {
+public class CollegiateSubreddit {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
-
-  // This establishes that many todos can belong to one user
-  // Only the user_id is stored in the table, and through it we
-  // can access the user's details
-
-
+  
   private String name;
   private String location;
   private String subreddit;
