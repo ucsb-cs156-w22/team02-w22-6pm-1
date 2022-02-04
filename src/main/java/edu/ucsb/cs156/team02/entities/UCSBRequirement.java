@@ -31,7 +31,7 @@ public class UCSBRequirement {
   private String requirementTranslation;
   private String collegeCode;
   private String objCode;
-  private long courseCount;
-  private long units;
+  private int courseCount;
+  private int units;
   private boolean inactive;
 }
