@@ -6,7 +6,6 @@ Storybook is here:
 - Production: <https://w22-6pm-1-team02.herokuapp.com/>
 - QA: <https://w22-6pm-1-team02-qa.herokuapp.com/>
 
-
 The GitHub actions script to deploy the Storybook to QA requires some configuration; see [docs/github-actions.md](docs/github-actions.md) for details.
 
 If these repos are not yet setup, see the setup steps in [`docs/storybook.md`](docs/storybook.md).
