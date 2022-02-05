@@ -81,7 +81,7 @@ public class UCSBSubjectController extends ApiController{
     }
 
     @ApiOperation(value = "Get a UCSB Subject with given id")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    // @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("")
     public ResponseEntity<String> getSubjectById(
             @ApiParam("id") @RequestParam Long id) throws JsonProcessingException {
