@@ -126,6 +126,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase{
         assertEquals(expectedJson, responseString);
     }
 
+    //Test api /get UCSB Subject id that doesn't exist
     @Test
     public void api_get_id_returns_a_subject_that_does_not_exist() throws Exception {
 
@@ -143,7 +144,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase{
         assertEquals("UCSBSubject with id 7 not found", responseString);
     }
 
-    // @WithMockUser(roles = { "USER" })
+    //Test api /put subject given id
     @Test
     public void api_subject_put_subject() throws Exception {
         // arrange
@@ -174,7 +175,7 @@ public class UCSBSubjectControllerTests extends ControllerTestCase{
         assertEquals(expectedReturn, responseString);
     }
 
-    // @WithMockUser(roles = { "USER" })
+    // Test api /put with Subject id that doesn't exist
     @Test
     public void api_subject_put_that_does_not_exist() throws Exception {
         // arrange
