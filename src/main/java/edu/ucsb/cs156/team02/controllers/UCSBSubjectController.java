@@ -32,6 +32,17 @@ import java.util.Optional;
 @RestController
 @Slf4j
 public class UCSBSubjectController extends ApiController{
+
+    public class UCSBSubjectOrError {
+        Long id;
+        UCSBSubject subject;
+        ResponseEntity<String> error;
+
+        public UCSBSubjectOrError(Long id) {
+            this.id = id;
+        }
+    }
+
     @Autowired
     UCSBSubjectRepository ucsbSubjectRepository;
 
@@ -57,7 +68,7 @@ public class UCSBSubjectController extends ApiController{
             @ApiParam("related dept code") @RequestParam String relatedDeptCode,
             @ApiParam("inactive") @RequestParam boolean inactive) {
         loggingService.logMethod();
-        
+      
         UCSBSubject newSubject = new UCSBSubject();
         newSubject.setId(id);
         newSubject.setSubjectCode(subjectCode);
@@ -72,4 +83,54 @@ public class UCSBSubjectController extends ApiController{
     }
 
 
+    @ApiOperation(value = "Get a UCSB Subject with given id")
+    // @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("")
+    public ResponseEntity<String> getSubjectById(
+            @ApiParam("id") @RequestParam Long id) throws JsonProcessingException {
+        loggingService.logMethod();
+        UCSBSubjectOrError usoe = new UCSBSubjectOrError(id);
+
+        usoe = doesUCSBSubjectExist(usoe);
+        if (usoe.error != null) {
+            return usoe.error;
+        }
+        String body = mapper.writeValueAsString(usoe.subject);
+        return ResponseEntity.ok().body(body);
+    }
+
+    @ApiOperation(value = "Update a single UCSBSubject")
+    @PutMapping("")
+    public ResponseEntity<String> putSubjectById(
+            @ApiParam("id") @RequestParam Long id,
+            @RequestBody @Valid UCSBSubject incomingUCSBSubject) throws JsonProcessingException {
+        loggingService.logMethod();
+
+        UCSBSubjectOrError usoe = new UCSBSubjectOrError(id);
+
+        usoe = doesUCSBSubjectExist(usoe);
+        if (usoe.error != null) {
+            return usoe.error;
+        }
+
+        ucsbSubjectRepository.save(incomingUCSBSubject);
+
+        String body = mapper.writeValueAsString(incomingUCSBSubject);
+        return ResponseEntity.ok().body(body);
+    }
+
+    public UCSBSubjectOrError doesUCSBSubjectExist(UCSBSubjectOrError usoe) {
+
+        Optional<UCSBSubject> optionalUCSBSubject = ucsbSubjectRepository.findById(usoe.id);
+
+        if (optionalUCSBSubject.isEmpty()) {
+            usoe.error = ResponseEntity
+                    .badRequest()
+                    .body(String.format("UCSBSubject with id %d not found", usoe.id));
+        } else {
+            usoe.subject = optionalUCSBSubject.get();
+        }
+        return usoe;
+    }
+}
 }
