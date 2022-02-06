@@ -133,4 +133,4 @@ public class UCSBSubjectController extends ApiController{
         return usoe;
     }
 }
-}
+
