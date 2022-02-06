@@ -32,6 +32,7 @@ import java.util.Optional;
 @RestController
 @Slf4j
 public class UCSBSubjectController extends ApiController{
+
     public class UCSBSubjectOrError {
         Long id;
         UCSBSubject subject;
@@ -41,6 +42,7 @@ public class UCSBSubjectController extends ApiController{
             this.id = id;
         }
     }
+
     @Autowired
     UCSBSubjectRepository ucsbSubjectRepository;
 
@@ -66,7 +68,7 @@ public class UCSBSubjectController extends ApiController{
             @ApiParam("related dept code") @RequestParam String relatedDeptCode,
             @ApiParam("inactive") @RequestParam boolean inactive) {
         loggingService.logMethod();
-
+      
         UCSBSubject newSubject = new UCSBSubject();
         newSubject.setId(id);
         newSubject.setSubjectCode(subjectCode);
@@ -79,6 +81,7 @@ public class UCSBSubjectController extends ApiController{
         UCSBSubject savedSubject = ucsbSubjectRepository.save(newSubject);
         return savedSubject;
     }
+
 
     @ApiOperation(value = "Get a UCSB Subject with given id")
     // @PreAuthorize("hasRole('ROLE_USER')")
@@ -129,6 +132,5 @@ public class UCSBSubjectController extends ApiController{
         }
         return usoe;
     }
-
-
+}
 }
