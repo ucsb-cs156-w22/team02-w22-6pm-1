@@ -63,7 +63,7 @@ public class UCSBSubjectController extends ApiController {
             @ApiParam("id") @RequestParam long id,
             @ApiParam("subject code") @RequestParam String subjectCode,
             @ApiParam("subject translation") @RequestParam String subjectTranslation,
-            @ApiParam("dept code") @RequestParam String deptCode,
+            @ApiParam("dept code") @RequestParam String deptCod
             @ApiParam("college code") @RequestParam String collegeCode,
             @ApiParam("related dept code") @RequestParam String relatedDeptCode,
             @ApiParam("inactive") @RequestParam boolean inactive) {
