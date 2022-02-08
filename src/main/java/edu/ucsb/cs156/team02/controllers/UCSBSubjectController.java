@@ -31,7 +31,7 @@ import java.util.Optional;
 @RequestMapping("/api/UCSBSubject")
 @RestController
 @Slf4j
-public class UCSBSubjectController extends ApiController {
+public class UCSBSubjectController extends ApiController{
 
     public class UCSBSubjectOrError {
         Long id;
@@ -68,7 +68,7 @@ public class UCSBSubjectController extends ApiController {
             @ApiParam("related dept code") @RequestParam String relatedDeptCode,
             @ApiParam("inactive") @RequestParam boolean inactive) {
         loggingService.logMethod();
-
+      
         UCSBSubject newSubject = new UCSBSubject();
         newSubject.setId(id);
         newSubject.setSubjectCode(subjectCode);
@@ -81,6 +81,7 @@ public class UCSBSubjectController extends ApiController {
         UCSBSubject savedSubject = ucsbSubjectRepository.save(newSubject);
         return savedSubject;
     }
+
 
     @ApiOperation(value = "Get a UCSB Subject with given id")
     // @PreAuthorize("hasRole('ROLE_USER')")
@@ -116,6 +117,25 @@ public class UCSBSubjectController extends ApiController {
 
         String body = mapper.writeValueAsString(incomingUCSBSubject);
         return ResponseEntity.ok().body(body);
+    }
+
+    @ApiOperation(value = "Delete a single UCSBSubject")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("")
+    public ResponseEntity<String> deleteUCSBSubject(
+            @ApiParam("id") @RequestParam Long id) {
+        loggingService.logMethod();
+
+        UCSBSubjectOrError usoe = new UCSBSubjectOrError(id);
+
+        usoe = doesUCSBSubjectExist(usoe);
+        if (usoe.error != null) {
+            return usoe.error;
+        }
+
+        ucsbSubjectRepository.deleteById(id);
+
+        return ResponseEntity.ok().body(String.format("UCSBSubject with id %d deleted", id));
     }
 
     public UCSBSubjectOrError doesUCSBSubjectExist(UCSBSubjectOrError usoe) {
