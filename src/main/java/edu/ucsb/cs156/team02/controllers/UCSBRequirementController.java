@@ -13,8 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -67,6 +69,26 @@ public class UCSBRequirementController extends ApiController {
         }
 
         String body = mapper.writeValueAsString(roe.requirement);
+        return ResponseEntity.ok().body(body);
+    }
+
+    @ApiOperation(value = "Update a single requirement")
+    @PutMapping("")
+    public ResponseEntity<String> putRequirementById(
+            @ApiParam("id") @RequestParam Long id,
+            @RequestBody @Valid UCSBRequirement incomingRequirement) throws JsonProcessingException {
+        loggingService.logMethod();
+
+        RequirementOrError roe = new RequirementOrError(id);
+
+        roe = doesRequirementExist(roe);
+        if (roe.error != null) {
+            return roe.error;
+        }
+
+        UCSBRequirementRepository.save(incomingRequirement);
+
+        String body = mapper.writeValueAsString(incomingRequirement);
         return ResponseEntity.ok().body(body);
     }
 
