@@ -46,12 +46,16 @@ public class CollegiateSubredditControllerTests extends ControllerTestCase {
 
         // arrange
 
-        CollegiateSubreddit collegiateSubreddit1 = CollegiateSubreddit.builder().name("College 1").location("Iceland").subreddit("icelandu").id(1L).build();
-        CollegiateSubreddit collegiateSubreddit2 = CollegiateSubreddit.builder().name("College 2").location("Czech Republic").subreddit("czechu").id(2L).build();
-        CollegiateSubreddit collegiateSubreddit3 = CollegiateSubreddit.builder().name("College 3").location("Norway").subreddit("Norwayu").id(3L).build();
+        CollegiateSubreddit collegiateSubreddit1 = CollegiateSubreddit.builder().name("College 1").location("Iceland")
+                .subreddit("icelandu").id(1L).build();
+        CollegiateSubreddit collegiateSubreddit2 = CollegiateSubreddit.builder().name("College 2")
+                .location("Czech Republic").subreddit("czechu").id(2L).build();
+        CollegiateSubreddit collegiateSubreddit3 = CollegiateSubreddit.builder().name("College 3").location("Norway")
+                .subreddit("Norwayu").id(3L).build();
 
         ArrayList<CollegiateSubreddit> expectedCollegiateSubreddits = new ArrayList<>();
-        expectedCollegiateSubreddits.addAll(Arrays.asList(collegiateSubreddit1, collegiateSubreddit2, collegiateSubreddit3));
+        expectedCollegiateSubreddits
+                .addAll(Arrays.asList(collegiateSubreddit1, collegiateSubreddit2, collegiateSubreddit3));
 
         when(collegiateSubredditRepository.findAll()).thenReturn(expectedCollegiateSubreddits);
 
@@ -92,9 +96,11 @@ public class CollegiateSubredditControllerTests extends ControllerTestCase {
     public void api_post() throws Exception {
         // arrange
 
-        CollegiateSubreddit expectedCollegiateSubreddit = CollegiateSubreddit.builder().name("College 1").location("Iceland").subreddit("icelandu").id(0L).build();
+        CollegiateSubreddit expectedCollegiateSubreddit = CollegiateSubreddit.builder().name("College 1")
+                .location("Iceland").subreddit("icelandu").id(0L).build();
 
-        when(collegiateSubredditRepository.save(eq(expectedCollegiateSubreddit))).thenReturn(expectedCollegiateSubreddit);
+        when(collegiateSubredditRepository.save(eq(expectedCollegiateSubreddit)))
+                .thenReturn(expectedCollegiateSubreddit);
 
         // act
         MvcResult response = mockMvc.perform(
@@ -109,12 +115,13 @@ public class CollegiateSubredditControllerTests extends ControllerTestCase {
         assertEquals(expectedJson, responseString);
     }
 
-    //Test api /get with id parameter endpoint
+    // Test api /get with id parameter endpoint
     @Test
     public void api_get_id_returns_a_subreddit_that_exists() throws Exception {
 
         // arrange
-        CollegiateSubreddit expectedCollegiateSubreddit = CollegiateSubreddit.builder().name("College 1").location("Iceland").subreddit("icelandu").id(1L).build();
+        CollegiateSubreddit expectedCollegiateSubreddit = CollegiateSubreddit.builder().name("College 1")
+                .location("Iceland").subreddit("icelandu").id(1L).build();
         when(collegiateSubredditRepository.findById(eq(1L))).thenReturn(Optional.of(expectedCollegiateSubreddit));
 
         // act
@@ -129,7 +136,7 @@ public class CollegiateSubredditControllerTests extends ControllerTestCase {
         assertEquals(expectedJson, responseString);
     }
 
-    //Test api /get Collegiate Subreddit id that doesn't exist
+    // Test api /get Collegiate Subreddit id that doesn't exist
     @Test
     public void api_get_id_returns_a_subreddit_that_does_not_exist() throws Exception {
 
@@ -145,5 +152,61 @@ public class CollegiateSubredditControllerTests extends ControllerTestCase {
         verify(collegiateSubredditRepository, times(1)).findById(eq(7L));
         String responseString = response.getResponse().getContentAsString();
         assertEquals("Collegiate Subreddit with id 7 not found", responseString);
+    }
+
+    @Test
+    public void api_put_subreddit() throws Exception {
+
+        // arrange
+        CollegiateSubreddit colSub = CollegiateSubreddit.builder().id(1L).name("Gamer College").location("Greenland")
+                .subreddit("r/gamercollege").build();
+
+        CollegiateSubreddit updatedColSub = CollegiateSubreddit.builder().id(1L).name("Cool Guy College")
+                .location("Finland").subreddit("r/coolguycollege").build();
+
+        CollegiateSubreddit correctColSub = CollegiateSubreddit.builder().id(1L).name("Cool Guy College")
+                .location("Finland").subreddit("r/coolguycollege").build();
+
+        String requestBody = mapper.writeValueAsString(updatedColSub);
+        String expectedReturn = mapper.writeValueAsString(correctColSub);
+
+        when(collegiateSubredditRepository.findById(eq(1L))).thenReturn(Optional.of(colSub));
+
+        // act
+        MvcResult response = mockMvc.perform(
+                put("/api/collegiateSubreddits?id=1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("utf-8")
+                        .content(requestBody)
+                        .with(csrf()))
+                .andExpect(status().isOk()).andReturn();
+
+        // assert
+        verify(collegiateSubredditRepository, times(1)).findById(1L);
+        verify(collegiateSubredditRepository, times(1)).save(correctColSub);
+        String responseString = response.getResponse().getContentAsString();
+        assertEquals(expectedReturn, responseString);
+    }
+
+    @Test
+    public void api_put_nonexistent_subreddit() throws Exception {
+        // arrange
+
+        CollegiateSubreddit updatedColSub = CollegiateSubreddit.builder().id(1L).name("Gamer College")
+                .location("Greenland").subreddit("r/gamercollege").build();
+
+        String requestBody = mapper.writeValueAsString(updatedColSub);
+
+        MvcResult response = mockMvc.perform(
+                put("/api/collegiateSubreddits?id=1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("utf-8")
+                        .content(requestBody)
+                        .with(csrf()))
+                .andExpect(status().isBadRequest()).andReturn();
+
+        verify(collegiateSubredditRepository, times(1)).findById(1L);
+        String responseString = response.getResponse().getContentAsString();
+        assertEquals("Collegiate Subreddit with id 1 not found", responseString);
     }
 }

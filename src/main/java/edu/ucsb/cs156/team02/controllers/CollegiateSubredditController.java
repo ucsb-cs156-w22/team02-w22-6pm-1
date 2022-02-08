@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
+
 import javax.validation.Valid;
 import java.util.Optional;
 
@@ -102,6 +104,24 @@ public class CollegiateSubredditController extends ApiController {
 
         String body = mapper.writeValueAsString(incomingCollegiateSubreddit);
         return ResponseEntity.ok().body(body);
+    }
+
+    @ApiOperation(value = "Delete another user's todo")
+    @DeleteMapping("")
+    public ResponseEntity<String> deleteSubreddit(
+            @ApiParam("id") @RequestParam Long id) {
+        loggingService.logMethod();
+
+        SubredditOrError soe = new SubredditOrError(id);
+
+        soe = doesSubredditExist(soe);
+        if (soe.error != null) {
+            return soe.error;
+        }
+
+        collegiateSubredditRepository.deleteById(id);
+
+        return ResponseEntity.ok().body(String.format("subreddit with id %d deleted", id));
     }
 
     public SubredditOrError doesSubredditExist(SubredditOrError soe) {
