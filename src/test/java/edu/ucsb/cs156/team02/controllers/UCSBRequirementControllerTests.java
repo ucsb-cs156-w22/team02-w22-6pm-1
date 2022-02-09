@@ -107,6 +107,7 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
     // Test /post endpoint
 
     @Test
+    @WithMockUser(roles = { "USER" })
     public void api_post() throws Exception {
         // arrange
 
@@ -180,6 +181,7 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
 
     // Test api /put requirement given id
     @Test
+    @WithMockUser(roles = { "USER" })
     public void api_requirement_put_requirement() throws Exception {
             // arrange
 
@@ -230,6 +232,7 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
 
     // Test api /put with requirement id that doesn't exist
     @Test
+    @WithMockUser(roles = { "USER" })
     public void api_requirement_put_that_does_not_exist() throws Exception {
             // arrange
 
@@ -262,6 +265,7 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
 
        //Test api delete with given id
        @Test
+       @WithMockUser(roles = { "USER" })
        public void api_requirement_delete_requirement() throws Exception {
            // arrange
            UCSBRequirement UCSBRequirement1 = UCSBRequirement.builder().requirementCode("test1")
@@ -289,6 +293,7 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
        }
        //Test api delete with Subject id that doesn't exist
        @Test
+       @WithMockUser(roles = { "USER" })
        public void api_requirement_delete_requirement_that_does_not_exist() throws Exception {
            // arrange
    
