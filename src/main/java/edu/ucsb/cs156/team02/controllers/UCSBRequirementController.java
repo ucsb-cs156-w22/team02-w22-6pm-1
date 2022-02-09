@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -90,6 +91,24 @@ public class UCSBRequirementController extends ApiController {
 
         String body = mapper.writeValueAsString(incomingRequirement);
         return ResponseEntity.ok().body(body);
+    }
+
+    @ApiOperation(value = "Delete a single requirement")
+    @DeleteMapping("")
+    public ResponseEntity<String> deleteUCSBRequirement(
+            @ApiParam("id") @RequestParam Long id) {
+        loggingService.logMethod();
+
+        RequirementOrError roe = new RequirementOrError(id);
+
+        roe = doesRequirementExist(roe);
+        if (roe.error != null) {
+            return roe.error;
+        }
+
+        UCSBRequirementRepository.deleteById(id);
+
+        return ResponseEntity.ok().body(String.format("Requirement with id %d deleted", id));
     }
 
     @ApiOperation(value = "List all requirements in the database")
