@@ -260,4 +260,51 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
             assertEquals("id 1 not found", responseString);
     }
 
+       //Test api delete with given id
+       @Test
+       public void api_requirement_delete_requirement() throws Exception {
+           // arrange
+           UCSBRequirement UCSBRequirement1 = UCSBRequirement.builder().requirementCode("test1")
+           .requirementTranslation("teast1")
+           .collegeCode("tesat1")
+           .objCode("teast1")
+           .courseCount(1)
+           .units(1)
+           .inactive(true).build();
+
+           when(UCSBRequirementRepository.findById(eq(1L))).thenReturn(Optional.of(UCSBRequirement1));
+
+   
+           // act
+           MvcResult response = mockMvc.perform(
+                   delete("/api/UCSBRequirements?id=1")
+                           .with(csrf()))
+                   .andExpect(status().isOk()).andReturn();
+   
+           // assert
+           verify(UCSBRequirementRepository, times(1)).findById(1L);
+           verify(UCSBRequirementRepository, times(1)).deleteById(1L);
+           String responseString = response.getResponse().getContentAsString();
+           assertEquals("Requirement with id 1 deleted", responseString);
+       }
+       //Test api delete with Subject id that doesn't exist
+       @Test
+       public void api_requirement_delete_requirement_that_does_not_exist() throws Exception {
+           // arrange
+   
+           when(UCSBRequirementRepository.findById(eq(17L))).thenReturn(Optional.empty());
+   
+           // act
+           MvcResult response = mockMvc.perform(
+                   delete("/api/UCSBRequirements?id=17")
+                           .with(csrf()))
+                   .andExpect(status().isBadRequest()).andReturn();
+   
+           // assert
+           verify(UCSBRequirementRepository, times(1)).findById(17L);
+           String responseString = response.getResponse().getContentAsString();
+           assertEquals("id 17 not found", responseString);
+       }
+   
+
 }
