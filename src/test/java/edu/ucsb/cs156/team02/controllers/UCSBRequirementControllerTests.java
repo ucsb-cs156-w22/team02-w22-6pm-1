@@ -116,13 +116,13 @@ public class UCSBRequirementControllerTests extends ControllerTestCase {
                 .objCode("test")
                 .courseCount(1)
                 .units(1)
-                .inactive(false).build();
+                .inactive(true).build();
 
         when(UCSBRequirementRepository.save(eq(expectedUCSBRequirement))).thenReturn(expectedUCSBRequirement);
 
         // act
         MvcResult response = mockMvc.perform(
-                post("/api/UCSBRequirements/post?requirementCode=test&requirementTranslation=test&collegeCode=test&objCode=test&courseCount=1&units=1&inactive=false")
+                post("/api/UCSBRequirements/post?requirementCode=test&requirementTranslation=test&collegeCode=test&objCode=test&courseCount=1&units=1&inactive=true")
                         .with(csrf()))
                 .andExpect(status().isOk()).andReturn();
 
