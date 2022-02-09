@@ -17,7 +17,6 @@ import lombok.Builder;
 @Entity(name = "ucsb_subjects")
 public class UCSBSubject {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String subjectCode;
     private String subjectTranslation;
