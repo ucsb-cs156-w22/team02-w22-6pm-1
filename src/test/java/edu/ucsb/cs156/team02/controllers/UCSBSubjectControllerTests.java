@@ -201,4 +201,41 @@ public class UCSBSubjectControllerTests extends ControllerTestCase{
         assertEquals("UCSBSubject with id 1 not found", responseString);
     }
 
+    //Test api delete with given id
+    @Test
+    public void api_subject_delete_subject() throws Exception {
+        // arrange
+        UCSBSubject ucsbSubject = UCSBSubject.builder().id(1L).subjectCode("code 1").subjectTranslation("translation 1").deptCode("dept code 1").collegeCode("college code 1").relatedDeptCode("related dept code 1").inactive(true).build();
+        when(ucsbSubjectRepository.findById(eq(1L))).thenReturn(Optional.of(ucsbSubject));
+
+        // act
+        MvcResult response = mockMvc.perform(
+                delete("/api/UCSBSubject?id=1")
+                        .with(csrf()))
+                .andExpect(status().isOk()).andReturn();
+
+        // assert
+        verify(ucsbSubjectRepository, times(1)).findById(1L);
+        verify(ucsbSubjectRepository, times(1)).deleteById(1L);
+        String responseString = response.getResponse().getContentAsString();
+        assertEquals("UCSBSubject with id 1 deleted", responseString);
+    }
+    //Test api delete with Subject id that doesn't exist
+    @Test
+    public void api_subject_delete_subject_that_does_not_exist() throws Exception {
+        // arrange
+
+        when(ucsbSubjectRepository.findById(eq(17L))).thenReturn(Optional.empty());
+
+        // act
+        MvcResult response = mockMvc.perform(
+                delete("/api/UCSBSubject?id=17")
+                        .with(csrf()))
+                .andExpect(status().isBadRequest()).andReturn();
+
+        // assert
+        verify(ucsbSubjectRepository, times(1)).findById(17L);
+        String responseString = response.getResponse().getContentAsString();
+        assertEquals("UCSBSubject with id 17 not found", responseString);
+    }
 }

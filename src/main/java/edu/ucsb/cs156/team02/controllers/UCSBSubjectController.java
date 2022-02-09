@@ -119,6 +119,25 @@ public class UCSBSubjectController extends ApiController{
         return ResponseEntity.ok().body(body);
     }
 
+    @ApiOperation(value = "Delete a single UCSBSubject")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("")
+    public ResponseEntity<String> deleteUCSBSubject(
+            @ApiParam("id") @RequestParam Long id) {
+        loggingService.logMethod();
+
+        UCSBSubjectOrError usoe = new UCSBSubjectOrError(id);
+
+        usoe = doesUCSBSubjectExist(usoe);
+        if (usoe.error != null) {
+            return usoe.error;
+        }
+
+        ucsbSubjectRepository.deleteById(id);
+
+        return ResponseEntity.ok().body(String.format("UCSBSubject with id %d deleted", id));
+    }
+
     public UCSBSubjectOrError doesUCSBSubjectExist(UCSBSubjectOrError usoe) {
 
         Optional<UCSBSubject> optionalUCSBSubject = ucsbSubjectRepository.findById(usoe.id);
