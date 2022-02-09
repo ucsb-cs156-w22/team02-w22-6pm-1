@@ -106,7 +106,7 @@ public class CollegiateSubredditController extends ApiController {
         return ResponseEntity.ok().body(body);
     }
 
-    @ApiOperation(value = "Delete another user's todo")
+    @ApiOperation(value = "Delete a subreddit")
     @DeleteMapping("")
     public ResponseEntity<String> deleteSubreddit(
             @ApiParam("id") @RequestParam Long id) {
@@ -121,7 +121,7 @@ public class CollegiateSubredditController extends ApiController {
 
         collegiateSubredditRepository.deleteById(id);
 
-        return ResponseEntity.ok().body(String.format("subreddit with id %d deleted", id));
+        return ResponseEntity.ok().body(String.format("Collegiate Subreddit with id %d deleted", id));
     }
 
     public SubredditOrError doesSubredditExist(SubredditOrError soe) {
