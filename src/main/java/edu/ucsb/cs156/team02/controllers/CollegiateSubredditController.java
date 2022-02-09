@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -56,6 +57,7 @@ public class CollegiateSubredditController extends ApiController {
     }
 
     @ApiOperation(value = "Create a new entry in the table")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/post")
     public CollegiateSubreddit createEntry(
             @ApiParam("name") @RequestParam String name,
@@ -71,7 +73,6 @@ public class CollegiateSubredditController extends ApiController {
     }
 
     @ApiOperation(value = "Get a collegiate subreddit with given id")
-    // @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("")
     public ResponseEntity<String> getSubredditById(
             @ApiParam("id") @RequestParam Long id) throws JsonProcessingException {
@@ -87,6 +88,7 @@ public class CollegiateSubredditController extends ApiController {
     }
 
     @ApiOperation(value = "Update a single CollegiateSubreddit")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("")
     public ResponseEntity<String> putSubredditById(
             @ApiParam("id") @RequestParam Long id,
@@ -107,6 +109,7 @@ public class CollegiateSubredditController extends ApiController {
     }
 
     @ApiOperation(value = "Delete a subreddit")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("")
     public ResponseEntity<String> deleteSubreddit(
             @ApiParam("id") @RequestParam Long id) {

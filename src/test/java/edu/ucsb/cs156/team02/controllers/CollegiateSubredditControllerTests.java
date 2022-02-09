@@ -96,6 +96,7 @@ public class CollegiateSubredditControllerTests extends ControllerTestCase {
         // Test /post endpoint
 
         @Test
+        @WithMockUser(roles = { "USER" })
         public void api_post() throws Exception {
                 // arrange
 
@@ -159,6 +160,7 @@ public class CollegiateSubredditControllerTests extends ControllerTestCase {
         }
 
         @Test
+        @WithMockUser(roles = { "USER" })
         public void api_put_subreddit() throws Exception {
 
                 // arrange
@@ -194,6 +196,7 @@ public class CollegiateSubredditControllerTests extends ControllerTestCase {
         }
 
         @Test
+        @WithMockUser(roles = { "USER" })
         public void api_put_nonexistent_subreddit() throws Exception {
                 // arrange
 
@@ -216,6 +219,7 @@ public class CollegiateSubredditControllerTests extends ControllerTestCase {
         }
 
         @Test
+        @WithMockUser(roles = { "USER" })
         public void api_delete_subreddit() throws Exception {
                 // arrange
 
@@ -239,6 +243,7 @@ public class CollegiateSubredditControllerTests extends ControllerTestCase {
         }
 
         @Test
+        @WithMockUser(roles = { "USER" })
         public void api_delete_nonexistent_subreddit() throws Exception {
                 // arrange
                 when(collegiateSubredditRepository.findById(eq(2L))).thenReturn(Optional.empty());
