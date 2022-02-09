@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -74,6 +75,7 @@ public class UCSBRequirementController extends ApiController {
     }
 
     @ApiOperation(value = "Update a single requirement")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("")
     public ResponseEntity<String> putRequirementById(
             @ApiParam("id") @RequestParam Long id,
@@ -94,6 +96,7 @@ public class UCSBRequirementController extends ApiController {
     }
 
     @ApiOperation(value = "Delete a single requirement")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("")
     public ResponseEntity<String> deleteUCSBRequirement(
             @ApiParam("id") @RequestParam Long id) {
@@ -120,6 +123,7 @@ public class UCSBRequirementController extends ApiController {
     }
 
     @ApiOperation(value = "Create a new requirement entry in the table")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/post")
     public UCSBRequirement createEntry(
             @ApiParam("requirementCode")        @RequestParam String requirementCode,
